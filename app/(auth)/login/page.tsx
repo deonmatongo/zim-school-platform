@@ -58,20 +58,32 @@ export default function LoginPage() {
     e.preventDefault()
     setLoading(true)
     setError(null)
+
+    const DEMO_ROLE_MAP: Record<string, string> = {
+      'admin@zimschools.dev':   'admin',
+      'teacher@zimschools.dev': 'teacher',
+      'parent@zimschools.dev':  'parent',
+      'student@zimschools.dev': 'student',
+    }
+    const isDemoAccount = email.toLowerCase() in DEMO_ROLE_MAP
+
+    // Demo accounts: skip Supabase entirely — set cookie and redirect
+    if (isDemoAccount) {
+      if (password !== 'demo1234') {
+        setError('Incorrect password. Use demo1234 for demo accounts.')
+        setLoading(false)
+        return
+      }
+      const role = DEMO_ROLE_MAP[email.toLowerCase()]
+      document.cookie = `dev_role=${role}; path=/; max-age=86400`
+      router.push('/dashboard')
+      router.refresh()
+      return
+    }
+
+    // Real accounts: use Supabase auth
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) { setError(error.message); setLoading(false); return }
-
-    // In dev/mock mode, persist chosen role via cookie so middleware can set the right role header
-    if (process.env.NEXT_PUBLIC_DEV_BYPASS === 'true' || !process.env.NEXT_PUBLIC_SUPABASE_URL) {
-      const roleMap: Record<string, string> = {
-        'admin@zimschools.dev':   'admin',
-        'teacher@zimschools.dev': 'teacher',
-        'parent@zimschools.dev':  'parent',
-        'student@zimschools.dev': 'student',
-      }
-      const role = roleMap[email.toLowerCase()] ?? 'admin'
-      document.cookie = `dev_role=${role}; path=/; max-age=86400`
-    }
 
     router.push('/dashboard')
     router.refresh()
