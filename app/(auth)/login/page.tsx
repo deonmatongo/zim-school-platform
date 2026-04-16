@@ -62,7 +62,7 @@ export default function LoginPage() {
     if (error) { setError(error.message); setLoading(false); return }
 
     // In dev/mock mode, persist chosen role via cookie so middleware can set the right role header
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    if (process.env.NEXT_PUBLIC_DEV_BYPASS === 'true' || !process.env.NEXT_PUBLIC_SUPABASE_URL) {
       const roleMap: Record<string, string> = {
         'admin@stgeorges.dev':   'admin',
         'teacher@stgeorges.dev': 'teacher',
