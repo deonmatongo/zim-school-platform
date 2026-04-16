@@ -3,8 +3,10 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { PaymentCreateSchema } from '@/lib/validators/fees'
 import { getRouteContext, parseBody, apiSuccess, apiError, requireRole } from '@/lib/api-helpers'
 import { generateReceiptNumber, applyPaymentToLedger } from '@/lib/services/fees'
+import { devMock } from '@/lib/dev/mock-handler'
 
 export async function POST(request: NextRequest) {
+  const mock = devMock(request, 'fees/payment:POST'); if (mock) return mock
   const ctx = getRouteContext(request)
   if (!ctx) return apiError('Unauthorised', 401)
 
@@ -49,6 +51,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
+  const mock = devMock(request, 'fees/payment:GET'); if (mock) return mock
   const ctx = getRouteContext(request)
   if (!ctx) return apiError('Unauthorised', 401)
 

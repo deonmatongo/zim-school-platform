@@ -2,9 +2,11 @@ import { NextRequest } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { BulkAttendanceSchema } from '@/lib/validators/attendance'
 import { getRouteContext, parseBody, apiSuccess, apiError, requireRole } from '@/lib/api-helpers'
+import { devMock } from '@/lib/dev/mock-handler'
 import { sendAbsenceAlert } from '@/lib/services/notifications'
 
 export async function GET(request: NextRequest) {
+  const mock = devMock(request, 'attendance:GET'); if (mock) return mock
   const ctx = getRouteContext(request)
   if (!ctx) return apiError('Unauthorised', 401)
 
@@ -57,6 +59,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const mock = devMock(request, 'attendance:POST'); if (mock) return mock
   const ctx = getRouteContext(request)
   if (!ctx) return apiError('Unauthorised', 401)
 

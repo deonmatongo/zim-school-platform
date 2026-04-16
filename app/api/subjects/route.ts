@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { z } from 'zod'
 import { getRouteContext, parseBody, apiSuccess, apiError, requireRole } from '@/lib/api-helpers'
+import { devMock } from '@/lib/dev/mock-handler'
 
 const SubjectCreateSchema = z.object({
   name: z.string().min(1).max(150),
@@ -10,6 +11,7 @@ const SubjectCreateSchema = z.object({
 })
 
 export async function GET(request: NextRequest) {
+  const mock = devMock(request, 'subjects:GET'); if (mock) return mock
   const ctx = getRouteContext(request)
   if (!ctx) return apiError('Unauthorised', 401)
 
@@ -26,6 +28,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const mock = devMock(request, 'subjects:POST'); if (mock) return mock
   const ctx = getRouteContext(request)
   if (!ctx) return apiError('Unauthorised', 401)
 

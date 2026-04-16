@@ -2,8 +2,10 @@ import { NextRequest } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { AnnouncementCreateSchema, AnnouncementUpdateSchema } from '@/lib/validators/announcement'
 import { getRouteContext, parseBody, apiSuccess, apiError, requireRole } from '@/lib/api-helpers'
+import { devMock } from '@/lib/dev/mock-handler'
 
 export async function GET(request: NextRequest) {
+  const mock = devMock(request, 'announcements:GET'); if (mock) return mock
   const ctx = getRouteContext(request)
   if (!ctx) return apiError('Unauthorised', 401)
 
@@ -43,6 +45,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const mock = devMock(request, 'announcements:POST'); if (mock) return mock
   const ctx = getRouteContext(request)
   if (!ctx) return apiError('Unauthorised', 401)
 

@@ -2,8 +2,10 @@ import { NextRequest } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { StudentUpdateSchema } from '@/lib/validators/student'
 import { getRouteContext, parseBody, apiSuccess, apiError, requireRole } from '@/lib/api-helpers'
+import { devMock } from '@/lib/dev/mock-handler'
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+  const mock = devMock(request, 'students/[id]:GET', params); if (mock) return mock
   const ctx = getRouteContext(request)
   if (!ctx) return apiError('Unauthorised', 401)
 
@@ -32,6 +34,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 }
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+  const mock = devMock(request, 'students/[id]:PUT', params); if (mock) return mock
   const ctx = getRouteContext(request)
   if (!ctx) return apiError('Unauthorised', 401)
 
@@ -56,6 +59,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 }
 
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+  const mock = devMock(request, 'students/[id]:DELETE', params); if (mock) return mock
   const ctx = getRouteContext(request)
   if (!ctx) return apiError('Unauthorised', 401)
 

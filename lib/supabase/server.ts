@@ -1,8 +1,10 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import type { Database } from '@/types/database'
+import { createMockClient } from './mock'
 
 export function createClient() {
+  if (process.env.DEV_BYPASS === 'true') return createMockClient() as any
   const cookieStore = cookies()
 
   return createServerClient<Database>(

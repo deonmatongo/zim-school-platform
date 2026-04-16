@@ -3,8 +3,10 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { FeeLedgerCreateSchema } from '@/lib/validators/fees'
 import { getRouteContext, parseBody, apiSuccess, apiError, requireRole } from '@/lib/api-helpers'
 import { computeBalance } from '@/lib/utils/fees'
+import { devMock } from '@/lib/dev/mock-handler'
 
 export async function GET(request: NextRequest) {
+  const mock = devMock(request, 'fees:GET'); if (mock) return mock
   const ctx = getRouteContext(request)
   if (!ctx) return apiError('Unauthorised', 401)
 
@@ -45,6 +47,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const mock = devMock(request, 'fees:POST'); if (mock) return mock
   const ctx = getRouteContext(request)
   if (!ctx) return apiError('Unauthorised', 401)
 

@@ -1,0 +1,18 @@
+{
+  "logo_url": "",
+  "favicon_url": "",
+  "school_type": "secondary",
+  "website_url": "",
+  "facebook_url": "",
+  "whatsapp_number": "",
+  "reg_number": "",
+  "primary_color": "#1a5276",
+  "accent_color": "#e67e22",
+  "dark_color": "#1a252f",
+  "font_family": "inter",
+  "navbar_style": "dark",
+  "show_motto_on_docs": true,
+  "doc_header_text": "",
+  "report_card_footer": "",
+  "watermark_text": ""
+}

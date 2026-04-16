@@ -1,8 +1,10 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '@/types/database'
+import { createMockClient } from './mock'
 
 // Service-role client — bypasses RLS. Use ONLY in trusted server contexts.
 export function createAdminClient() {
+  if (process.env.DEV_BYPASS === 'true') return createMockClient() as any
   if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
     throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set')
   }
