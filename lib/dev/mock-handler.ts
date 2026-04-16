@@ -30,7 +30,10 @@ function notFound(msg = 'Not found') {
 
 /** Call at the top of each API route GET/POST handler. Returns a Response or null (= continue normally). */
 export function devMock(request: NextRequest, routeKey: string, params?: Record<string, string>): NextResponse | null {
-  if (process.env.DEV_BYPASS !== 'true') return null
+  const hasDemoCookie = ['admin', 'teacher', 'parent', 'student'].includes(
+    request.cookies.get('dev_role')?.value ?? ''
+  )
+  if (process.env.DEV_BYPASS !== 'true' && !hasDemoCookie) return null
 
   const url = new URL(request.url)
   const sp = url.searchParams

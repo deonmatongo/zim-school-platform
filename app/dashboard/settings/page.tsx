@@ -1,24 +1,27 @@
 import { requireRole } from '@/lib/auth/getSession'
 import { createClient } from '@/lib/supabase/server'
-import { FormCard, FormSection, FormDivider } from '@/components/ui-custom/FormShell'
+import { FormCard } from '@/components/ui-custom/FormShell'
 import { SchoolSettingsForm } from './SchoolSettingsForm'
 import { BrandingForm } from './BrandingForm'
+import { school as devSchool, academicYears as devAcademicYears } from '@/lib/dev/seed-data'
 
 export default async function SettingsPage() {
   const user = await requireRole(['admin'])
-  const supabase = createClient()
 
-  const { data: school } = await supabase
-    .from('schools')
-    .select('*')
-    .eq('id', user.schoolId)
-    .single()
+  // Dev/demo mode — use seed data
+  const isDev = user.schoolId === 'dev-school'
 
-  const { data: academicYears } = await supabase
-    .from('academic_years')
-    .select('*')
-    .eq('school_id', user.schoolId)
-    .order('year', { ascending: false })
+  const school = isDev ? devSchool : await (async () => {
+    const supabase = createClient()
+    const { data } = await supabase.from('schools').select('*').eq('id', user.schoolId).single()
+    return data
+  })()
+
+  const academicYears = isDev ? [...devAcademicYears].sort((a, b) => b.year.localeCompare(a.year)) : await (async () => {
+    const supabase = createClient()
+    const { data } = await supabase.from('academic_years').select('*').eq('school_id', user.schoolId).order('year', { ascending: false })
+    return data ?? []
+  })()
 
   return (
     <div className="space-y-6 max-w-2xl">

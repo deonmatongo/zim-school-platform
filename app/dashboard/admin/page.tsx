@@ -28,7 +28,7 @@ export default async function AdminDashboard() {
   let attendanceToday: { status: string }[]
   let classFeeRows: { id: string; name: string; billed: number; paid: number }[]
 
-  if (process.env.DEV_BYPASS === 'true') {
+  if (user.schoolId === 'dev-school') {
     studentCount = devStudents.length
     teacherCount = devTeachers.length
     classCount = devClasses.length
