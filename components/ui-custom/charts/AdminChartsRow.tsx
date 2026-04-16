@@ -1,5 +1,6 @@
 'use client'
 
+import { memo } from 'react'
 import { FeesAreaChart } from './FeesAreaChart'
 import { CollectionDonut } from './CollectionDonut'
 
@@ -10,7 +11,7 @@ interface AdminChartsRowProps {
   monthlyTrend: { month: string; billed: number; collected: number }[]
 }
 
-export function AdminChartsRow({
+export const AdminChartsRow = memo(function AdminChartsRow({
   collectionRate, totalBilled, totalPaid, monthlyTrend,
 }: AdminChartsRowProps) {
   return (
@@ -75,4 +76,4 @@ export function AdminChartsRow({
       </div>
     </div>
   )
-}
+})

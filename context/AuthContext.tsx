@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { createContext, useContext, useCallback, useMemo, useRef, useState, ReactNode } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import type { Role } from '@/lib/auth/roles'
 
@@ -22,23 +22,29 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue>({
   user: null,
-  loading: true,
+  loading: false,
   signOut: async () => {},
 })
 
 export function AuthProvider({ children, initialUser }: { children: ReactNode; initialUser: AuthUser | null }) {
   const [user, setUser] = useState<AuthUser | null>(initialUser)
-  const [loading, setLoading] = useState(false)
-  const supabase = createClient()
+  // Stable client ref — never recreated between renders
+  const supabaseRef = useRef(createClient())
 
-  async function signOut() {
-    await supabase.auth.signOut()
+  const signOut = useCallback(async () => {
+    await supabaseRef.current.auth.signOut()
     setUser(null)
     window.location.href = '/login'
-  }
+  }, [])
+
+  // Memoize context value so consumers only re-render when user/signOut actually changes
+  const value = useMemo(
+    () => ({ user, loading: false, signOut }),
+    [user, signOut]
+  )
 
   return (
-    <AuthContext.Provider value={{ user, loading, signOut }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   )

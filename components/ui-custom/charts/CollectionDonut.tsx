@@ -1,5 +1,6 @@
 'use client'
 
+import { memo } from 'react'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 
 interface CollectionDonutProps {
@@ -19,7 +20,7 @@ function CustomTooltip({ active, payload }: any) {
   )
 }
 
-export function CollectionDonut({ rate, totalBilled, totalPaid }: CollectionDonutProps) {
+export const CollectionDonut = memo(function CollectionDonut({ rate, totalBilled, totalPaid }: CollectionDonutProps) {
   const remaining = Math.max(0, totalBilled - totalPaid)
   const data = [
     { name: 'Collected', value: totalPaid },
@@ -57,4 +58,4 @@ export function CollectionDonut({ rate, totalBilled, totalPaid }: CollectionDonu
       </div>
     </div>
   )
-}
+})

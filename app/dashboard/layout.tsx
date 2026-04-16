@@ -9,14 +9,14 @@ import type { ReactNode } from 'react'
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
   const user = await requireSession()
 
-  // Fetch school branding (skip in dev bypass mode)
+  // Dev/demo mode — skip DB entirely (schoolId is 'dev-school' for all demo users)
   let schoolName = 'Zimbabwe Schools'
   let primaryColor = '#1a5276'
-  if (process.env.DEV_BYPASS !== 'true') {
+  if (user.schoolId !== 'dev-school') {
     const supabase = createClient()
     const { data: school } = await supabase
       .from('schools')
-      .select('name, primary_color, accent_color, logo_url')
+      .select('name, primary_color')
       .eq('id', user.schoolId)
       .single()
     schoolName = school?.name ?? 'ZimSchool'

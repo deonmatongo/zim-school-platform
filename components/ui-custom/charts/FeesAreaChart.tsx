@@ -1,5 +1,6 @@
 'use client'
 
+import { memo } from 'react'
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, Legend,
@@ -31,7 +32,7 @@ function CustomTooltip({ active, payload, label }: any) {
   )
 }
 
-export function FeesAreaChart({ data }: FeesAreaChartProps) {
+export const FeesAreaChart = memo(function FeesAreaChart({ data }: FeesAreaChartProps) {
   return (
     <ResponsiveContainer width="100%" height={220}>
       <AreaChart data={data} margin={{ top: 8, right: 8, left: -8, bottom: 0 }}>
@@ -86,4 +87,4 @@ export function FeesAreaChart({ data }: FeesAreaChartProps) {
       </AreaChart>
     </ResponsiveContainer>
   )
-}
+})
