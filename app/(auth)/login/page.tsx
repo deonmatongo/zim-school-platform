@@ -12,7 +12,7 @@ import { Loader2, GraduationCap, Shield, BookOpen, Users, Eye, EyeOff, ChevronRi
 const DEMO_CREDENTIALS = [
   {
     role: 'Admin',
-    email: 'admin@stgeorges.dev',
+    email: 'admin@zimschools.dev',
     password: 'demo1234',
     description: 'Full access to all features',
     icon: Shield,
@@ -23,7 +23,7 @@ const DEMO_CREDENTIALS = [
   },
   {
     role: 'Teacher',
-    email: 'teacher@stgeorges.dev',
+    email: 'teacher@zimschools.dev',
     password: 'demo1234',
     description: 'Classes, marks & attendance',
     icon: BookOpen,
@@ -34,7 +34,7 @@ const DEMO_CREDENTIALS = [
   },
   {
     role: 'Parent',
-    email: 'parent@stgeorges.dev',
+    email: 'parent@zimschools.dev',
     password: 'demo1234',
     description: 'Child progress & announcements',
     icon: Users,
@@ -64,10 +64,10 @@ export default function LoginPage() {
     // In dev/mock mode, persist chosen role via cookie so middleware can set the right role header
     if (process.env.NEXT_PUBLIC_DEV_BYPASS === 'true' || !process.env.NEXT_PUBLIC_SUPABASE_URL) {
       const roleMap: Record<string, string> = {
-        'admin@stgeorges.dev':   'admin',
-        'teacher@stgeorges.dev': 'teacher',
-        'parent@stgeorges.dev':  'parent',
-        'student@stgeorges.dev': 'student',
+        'admin@zimschools.dev':   'admin',
+        'teacher@zimschools.dev': 'teacher',
+        'parent@zimschools.dev':  'parent',
+        'student@zimschools.dev': 'student',
       }
       const role = roleMap[email.toLowerCase()] ?? 'admin'
       document.cookie = `dev_role=${role}; path=/; max-age=86400`
@@ -94,7 +94,7 @@ export default function LoginPage() {
             <GraduationCap className="h-6 w-6 text-white" />
           </div>
           <div>
-            <p className="font-bold text-white text-lg leading-tight">St George's College</p>
+            <p className="font-bold text-white text-lg leading-tight">Zimbabwe Schools</p>
             <p className="text-slate-400 text-xs">School Management Portal</p>
           </div>
         </div>
@@ -160,7 +160,7 @@ export default function LoginPage() {
             <GraduationCap className="h-5 w-5 text-white" />
           </div>
           <div>
-            <p className="font-bold text-slate-800 text-base leading-tight">St George's College</p>
+            <p className="font-bold text-slate-800 text-base leading-tight">Zimbabwe Schools</p>
             <p className="text-slate-400 text-xs">School Management Portal</p>
           </div>
         </div>

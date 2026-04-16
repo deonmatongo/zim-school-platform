@@ -14,7 +14,7 @@ import {
 // Enriched teacher assignments for DEV use
 const devTeacherAssignments = teacherAssignments.map(a => ({
   ...a,
-  user_profiles: { id: a.teacher_id, first_name: a.user_profiles.first_name, last_name: a.user_profiles.last_name, email: `${a.user_profiles.first_name.toLowerCase()}@stgeorges.dev` },
+  user_profiles: { id: a.teacher_id, first_name: a.user_profiles.first_name, last_name: a.user_profiles.last_name, email: `${a.user_profiles.first_name.toLowerCase()}@zimschools.dev` },
   classes: classes.find(c => c.id === a.class_id) ? { id: a.class_id, name: classes.find(c => c.id === a.class_id)!.name } : null,
   subjects: { id: a.subject_id, name: a.subjects.name, code: a.subjects.code },
   academic_years: { id: ACADEMIC_YEAR_ID, year: '2025', term: 1 },

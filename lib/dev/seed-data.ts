@@ -59,11 +59,11 @@ export const subjects = [
 // ── Teachers ─────────────────────────────────────────────────────────────────
 
 export const teachers = [
-  { id: 'teacher-1', school_id: SCHOOL_ID, role: 'teacher', first_name: 'Grace',    last_name: 'Mutasa',    email: 'g.mutasa@stgeorges.dev',   active: true, avatar_url: null },
-  { id: 'teacher-2', school_id: SCHOOL_ID, role: 'teacher', first_name: 'Tendai',   last_name: 'Moyo',      email: 't.moyo@stgeorges.dev',     active: true, avatar_url: null },
-  { id: 'teacher-3', school_id: SCHOOL_ID, role: 'teacher', first_name: 'Rudo',     last_name: 'Chikwanda', email: 'r.chikwanda@stgeorges.dev', active: true, avatar_url: null },
-  { id: 'teacher-4', school_id: SCHOOL_ID, role: 'teacher', first_name: 'Farai',    last_name: 'Nzira',     email: 'f.nzira@stgeorges.dev',    active: true, avatar_url: null },
-  { id: 'teacher-5', school_id: SCHOOL_ID, role: 'teacher', first_name: 'Blessing', last_name: 'Mhike',     email: 'b.mhike@stgeorges.dev',    active: true, avatar_url: null },
+  { id: 'teacher-1', school_id: SCHOOL_ID, role: 'teacher', first_name: 'Grace',    last_name: 'Mutasa',    email: 'g.mutasa@zimschools.dev',   active: true, avatar_url: null },
+  { id: 'teacher-2', school_id: SCHOOL_ID, role: 'teacher', first_name: 'Tendai',   last_name: 'Moyo',      email: 't.moyo@zimschools.dev',     active: true, avatar_url: null },
+  { id: 'teacher-3', school_id: SCHOOL_ID, role: 'teacher', first_name: 'Rudo',     last_name: 'Chikwanda', email: 'r.chikwanda@zimschools.dev', active: true, avatar_url: null },
+  { id: 'teacher-4', school_id: SCHOOL_ID, role: 'teacher', first_name: 'Farai',    last_name: 'Nzira',     email: 'f.nzira@zimschools.dev',    active: true, avatar_url: null },
+  { id: 'teacher-5', school_id: SCHOOL_ID, role: 'teacher', first_name: 'Blessing', last_name: 'Mhike',     email: 'b.mhike@zimschools.dev',    active: true, avatar_url: null },
 ]
 
 // ── Classes ───────────────────────────────────────────────────────────────────
@@ -408,14 +408,14 @@ export const teacherAssignments = [
 
 export const school = {
   id: SCHOOL_ID,
-  name: "St. George's College",
-  slug: 'stgeorges',
+  name: 'Zimbabwe Schools',
+  slug: 'zimschools',
   primary_color: '#1a5276',
   accent_color: '#2980b9',
   logo_url: null,
   address: 'Harare, Zimbabwe',
   phone: '+263 242 123 456',
-  email: 'admin@stgeorges.ac.zw',
+  email: 'admin@zimschools.ac.zw',
   term: 1,
   created_at: '2024-01-01T00:00:00Z',
 }

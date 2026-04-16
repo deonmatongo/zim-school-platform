@@ -6,10 +6,10 @@ import type { Role } from './roles'
 const SCHOOL_ID = process.env.DEV_SCHOOL_ID ?? 'dev-school'
 
 const DEV_USERS: Record<string, SessionUser> = {
-  admin:   { id: 'dev-admin',   email: 'admin@stgeorges.dev',   schoolId: SCHOOL_ID, role: 'admin',   firstName: 'Dev',       lastName: 'Admin'   },
-  teacher: { id: 'teacher-1',   email: 'teacher@stgeorges.dev', schoolId: SCHOOL_ID, role: 'teacher', firstName: 'Grace',     lastName: 'Mutasa'  },
-  parent:  { id: 'dev-parent',  email: 'parent@stgeorges.dev',  schoolId: SCHOOL_ID, role: 'parent',  firstName: 'Demo',      lastName: 'Parent'  },
-  student: { id: 'stu-01',      email: 'student@stgeorges.dev', schoolId: SCHOOL_ID, role: 'student', firstName: 'Takudzwa',  lastName: 'Moyo'    },
+  admin:   { id: 'dev-admin',   email: 'admin@zimschools.dev',   schoolId: SCHOOL_ID, role: 'admin',   firstName: 'Dev',       lastName: 'Admin'   },
+  teacher: { id: 'teacher-1',   email: 'teacher@zimschools.dev', schoolId: SCHOOL_ID, role: 'teacher', firstName: 'Grace',     lastName: 'Mutasa'  },
+  parent:  { id: 'dev-parent',  email: 'parent@zimschools.dev',  schoolId: SCHOOL_ID, role: 'parent',  firstName: 'Demo',      lastName: 'Parent'  },
+  student: { id: 'stu-01',      email: 'student@zimschools.dev', schoolId: SCHOOL_ID, role: 'student', firstName: 'Takudzwa',  lastName: 'Moyo'    },
 }
 
 function getDevUser(): SessionUser {

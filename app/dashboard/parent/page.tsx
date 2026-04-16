@@ -48,7 +48,7 @@ const DUMMY_HOMEWORK: HomeworkItem[] = [
 
 const DUMMY_ANNOUNCEMENTS = [
   { id: 'a1', title: 'Term 2 Fee Deadline – 25 April', body: 'All outstanding Term 2 fees must be settled by 25 April 2026. Late payments attract a 5% surcharge.', pinned: true, created_at: '2026-04-12T08:00:00Z' },
-  { id: 'a2', title: 'Inter-Schools Sports Day – 3 May', body: "St George's College will host the annual inter-schools athletics day. Parents are welcome to attend.", pinned: false, created_at: '2026-04-10T10:30:00Z' },
+  { id: 'a2', title: 'Inter-Schools Sports Day – 3 May', body: "Zimbabwe Schools will host the annual inter-schools athletics day. Parents are welcome to attend.", pinned: false, created_at: '2026-04-10T10:30:00Z' },
   { id: 'a3', title: 'Parent-Teacher Meetings – 30 April', body: 'Bookings for the mid-term parent-teacher meetings are now open. Please contact the school office to reserve a slot.', pinned: false, created_at: '2026-04-09T09:00:00Z' },
   { id: 'a4', title: 'School Closure – 18 April (Good Friday)', body: 'The school will be closed on Friday 18 April 2026 in observance of Good Friday.', pinned: false, created_at: '2026-04-07T07:00:00Z' },
 ]
