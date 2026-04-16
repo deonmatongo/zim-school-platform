@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -50,32 +51,33 @@ export default function LoginPage() {
   const [loading, setLoading]   = useState(false)
   const [error, setError]       = useState<string | null>(null)
   const [showPass, setShowPass] = useState(false)
+  const router = useRouter()
   const supabase = createClient()
+
+  // Map demo email → role + destination (skip the /dashboard relay page)
+  const DEMO_ROLE_MAP: Record<string, { role: string; dest: string }> = {
+    'admin@zimschools.dev':   { role: 'admin',   dest: '/dashboard/admin' },
+    'teacher@zimschools.dev': { role: 'teacher', dest: '/dashboard/teacher' },
+    'parent@zimschools.dev':  { role: 'parent',  dest: '/dashboard/parent' },
+    'student@zimschools.dev': { role: 'student', dest: '/dashboard/student' },
+  }
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError(null)
 
-    const DEMO_ROLE_MAP: Record<string, string> = {
-      'admin@zimschools.dev':   'admin',
-      'teacher@zimschools.dev': 'teacher',
-      'parent@zimschools.dev':  'parent',
-      'student@zimschools.dev': 'student',
-    }
-    const isDemoAccount = email.toLowerCase() in DEMO_ROLE_MAP
+    const demo = DEMO_ROLE_MAP[email.toLowerCase()]
 
-    // Demo accounts: skip Supabase entirely — set cookie and hard redirect
-    if (isDemoAccount) {
+    // Demo accounts: skip Supabase, set cookie, navigate directly to role dashboard
+    if (demo) {
       if (password !== 'demo1234') {
         setError('Incorrect password. Use demo1234 for demo accounts.')
         setLoading(false)
         return
       }
-      const role = DEMO_ROLE_MAP[email.toLowerCase()]
-      document.cookie = `dev_role=${role}; path=/; max-age=86400`
-      // Hard redirect ensures the fresh cookie is sent with the next request
-      window.location.href = '/dashboard'
+      document.cookie = `dev_role=${demo.role}; path=/; max-age=86400`
+      router.push(demo.dest)
       return
     }
 
@@ -83,7 +85,7 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) { setError(error.message); setLoading(false); return }
 
-    window.location.href = '/dashboard'
+    router.push('/dashboard')
   }
 
   function fillDemo(cred: typeof DEMO_CREDENTIALS[0]) {
