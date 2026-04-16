@@ -17,15 +17,16 @@ const TEACHER_OR_ABOVE = [
   /^\/api\/announcements/,
 ]
 
-export async function middleware(request: NextRequest) {
-  // ── Dev bypass (no Supabase credentials) ─────────────────────────────────
-  if (process.env.DEV_BYPASS === 'true') {
-    const schoolId = process.env.DEV_SCHOOL_ID ?? 'dev-school'
-    const devRole = request.cookies.get('dev_role')?.value ?? 'admin'
-    const validRoles = ['admin', 'teacher', 'parent', 'student']
-    const role = validRoles.includes(devRole) ? devRole : 'admin'
+const VALID_ROLES = ['admin', 'teacher', 'parent', 'student']
 
-    // Forward headers on the REQUEST so server components can read them via headers()
+export async function middleware(request: NextRequest) {
+  // ── Demo / dev bypass — triggered by dev_role cookie OR DEV_BYPASS env var ─
+  const devRoleCookie = request.cookies.get('dev_role')?.value
+  const isDevMode = process.env.DEV_BYPASS === 'true' || (!!devRoleCookie && VALID_ROLES.includes(devRoleCookie))
+
+  if (isDevMode) {
+    const schoolId = process.env.DEV_SCHOOL_ID ?? 'dev-school'
+    const role = (devRoleCookie && VALID_ROLES.includes(devRoleCookie)) ? devRoleCookie : 'admin'
     const requestHeaders = new Headers(request.headers)
     requestHeaders.set('x-user-role', role)
     requestHeaders.set('x-user-id', `dev-${role}`)

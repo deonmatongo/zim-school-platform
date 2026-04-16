@@ -39,6 +39,12 @@ export interface SessionUser {
 }
 
 export async function getSession(): Promise<SessionUser | null> {
+  // Cookie-based dev mode — works regardless of env vars
+  try {
+    const cookieRole = cookies().get('dev_role')?.value
+    if (cookieRole && VALID_ROLES.includes(cookieRole)) return DEV_USERS[cookieRole]
+  } catch { /* ignore if cookies() unavailable */ }
+
   if (process.env.DEV_BYPASS === 'true') return getDevUser()
   const supabase = createClient()
   const { data: { session } } = await supabase.auth.getSession()
