@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -51,7 +50,6 @@ export default function LoginPage() {
   const [loading, setLoading]   = useState(false)
   const [error, setError]       = useState<string | null>(null)
   const [showPass, setShowPass] = useState(false)
-  const router = useRouter()
   const supabase = createClient()
 
   async function handleLogin(e: React.FormEvent) {
@@ -67,7 +65,7 @@ export default function LoginPage() {
     }
     const isDemoAccount = email.toLowerCase() in DEMO_ROLE_MAP
 
-    // Demo accounts: skip Supabase entirely — set cookie and redirect
+    // Demo accounts: skip Supabase entirely — set cookie and hard redirect
     if (isDemoAccount) {
       if (password !== 'demo1234') {
         setError('Incorrect password. Use demo1234 for demo accounts.')
@@ -76,8 +74,8 @@ export default function LoginPage() {
       }
       const role = DEMO_ROLE_MAP[email.toLowerCase()]
       document.cookie = `dev_role=${role}; path=/; max-age=86400`
-      router.push('/dashboard')
-      router.refresh()
+      // Hard redirect ensures the fresh cookie is sent with the next request
+      window.location.href = '/dashboard'
       return
     }
 
@@ -85,8 +83,7 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) { setError(error.message); setLoading(false); return }
 
-    router.push('/dashboard')
-    router.refresh()
+    window.location.href = '/dashboard'
   }
 
   function fillDemo(cred: typeof DEMO_CREDENTIALS[0]) {

@@ -1,24 +1,31 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { headers } from 'next/headers'
+import { headers, cookies } from 'next/headers'
 import type { Role } from './roles'
 
 const SCHOOL_ID = process.env.DEV_SCHOOL_ID ?? 'dev-school'
+const VALID_ROLES = ['admin', 'teacher', 'parent', 'student']
 
 const DEV_USERS: Record<string, SessionUser> = {
-  admin:   { id: 'dev-admin',   email: 'admin@zimschools.dev',   schoolId: SCHOOL_ID, role: 'admin',   firstName: 'Dev',       lastName: 'Admin'   },
-  teacher: { id: 'teacher-1',   email: 'teacher@zimschools.dev', schoolId: SCHOOL_ID, role: 'teacher', firstName: 'Grace',     lastName: 'Mutasa'  },
-  parent:  { id: 'dev-parent',  email: 'parent@zimschools.dev',  schoolId: SCHOOL_ID, role: 'parent',  firstName: 'Demo',      lastName: 'Parent'  },
-  student: { id: 'stu-01',      email: 'student@zimschools.dev', schoolId: SCHOOL_ID, role: 'student', firstName: 'Takudzwa',  lastName: 'Moyo'    },
+  admin:   { id: 'dev-admin',   email: 'admin@zimschools.dev',   schoolId: SCHOOL_ID, role: 'admin',   firstName: 'Dev',       lastName: 'Admin',    avatarUrl: null },
+  teacher: { id: 'teacher-1',   email: 'teacher@zimschools.dev', schoolId: SCHOOL_ID, role: 'teacher', firstName: 'Grace',     lastName: 'Mutasa',   avatarUrl: null },
+  parent:  { id: 'dev-parent',  email: 'parent@zimschools.dev',  schoolId: SCHOOL_ID, role: 'parent',  firstName: 'Demo',      lastName: 'Parent',   avatarUrl: null },
+  student: { id: 'stu-01',      email: 'student@zimschools.dev', schoolId: SCHOOL_ID, role: 'student', firstName: 'Takudzwa',  lastName: 'Moyo',     avatarUrl: null },
 }
 
 function getDevUser(): SessionUser {
   try {
-    const role = headers().get('x-user-role') ?? 'admin'
-    return DEV_USERS[role] ?? DEV_USERS.admin
+    // 1st: try header set by middleware (most reliable when headers propagate)
+    const headerRole = headers().get('x-user-role')
+    if (headerRole && VALID_ROLES.includes(headerRole)) return DEV_USERS[headerRole]
+
+    // 2nd: fall back to reading the cookie directly in the server component
+    const cookieRole = cookies().get('dev_role')?.value
+    if (cookieRole && VALID_ROLES.includes(cookieRole)) return DEV_USERS[cookieRole]
   } catch {
-    return DEV_USERS.admin
+    // headers()/cookies() unavailable in this context — use default
   }
+  return DEV_USERS.admin
 }
 
 export interface SessionUser {
