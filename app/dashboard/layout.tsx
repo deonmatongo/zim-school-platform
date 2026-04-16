@@ -10,7 +10,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   const user = await requireSession()
 
   // Fetch school branding (skip in dev bypass mode)
-  let schoolName = 'St. George\'s College'
+  let schoolName = 'Zimbabwe Schools'
   let primaryColor = '#1a5276'
   if (process.env.DEV_BYPASS !== 'true') {
     const supabase = createClient()

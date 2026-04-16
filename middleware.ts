@@ -18,20 +18,22 @@ const TEACHER_OR_ABOVE = [
 ]
 
 export async function middleware(request: NextRequest) {
-  const response = NextResponse.next({ request })
-
   // ── Dev bypass (no Supabase credentials) ─────────────────────────────────
   if (process.env.DEV_BYPASS === 'true') {
     const schoolId = process.env.DEV_SCHOOL_ID ?? 'dev-school'
     const devRole = request.cookies.get('dev_role')?.value ?? 'admin'
     const validRoles = ['admin', 'teacher', 'parent', 'student']
     const role = validRoles.includes(devRole) ? devRole : 'admin'
-    response.headers.set('x-user-role', role)
-    response.headers.set('x-user-id', `dev-${role}`)
-    response.headers.set('x-school-id', schoolId)
-    return response
+
+    // Forward headers on the REQUEST so server components can read them via headers()
+    const requestHeaders = new Headers(request.headers)
+    requestHeaders.set('x-user-role', role)
+    requestHeaders.set('x-user-id', `dev-${role}`)
+    requestHeaders.set('x-school-id', schoolId)
+    return NextResponse.next({ request: { headers: requestHeaders } })
   }
 
+  const response = NextResponse.next({ request })
   const supabase = createMiddlewareClient(request, response)
 
   // ── Tenant resolution ────────────────────────────────────────────────────
