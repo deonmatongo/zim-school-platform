@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const HomeworkCreateSchema = z.object({
+const HomeworkBaseSchema = z.object({
   class_id: z.string().uuid(),
   subject_id: z.string().uuid(),
   academic_year_id: z.string().uuid(),
@@ -9,9 +9,16 @@ export const HomeworkCreateSchema = z.object({
   attachment_url: z.string().url().optional().nullable(),
   set_date: z.string().date(),
   due_date: z.string().date(),
-}).refine(data => data.due_date >= data.set_date, {
+})
+
+const dateRefine = (data: Partial<z.infer<typeof HomeworkBaseSchema>>) =>
+  !data.due_date || !data.set_date || data.due_date >= data.set_date
+
+export const HomeworkCreateSchema = HomeworkBaseSchema.refine(dateRefine, {
   message: 'Due date must be on or after set date',
   path: ['due_date'],
 })
-
-export const HomeworkUpdateSchema = HomeworkCreateSchema.partial()
+export const HomeworkUpdateSchema = HomeworkBaseSchema.partial().refine(dateRefine, {
+  message: 'Due date must be on or after set date',
+  path: ['due_date'],
+})
